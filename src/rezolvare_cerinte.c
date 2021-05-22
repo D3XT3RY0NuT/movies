@@ -3,7 +3,7 @@
 #include <string.h>
 #include "structuri.h"
 #include "utilitare.h"
-#define NR_MAX_ACTORI_FILM 200 //Numarul maxim de actori dintr-un film
+#define NR_MAX_ACTORI_FILM 300 //Numarul maxim de actori dintr-un film
 
 //Determinarea distributiilor (componentelor conexe) din graf
 //Se foloseste algoritmul de parcurgere in adancime
@@ -32,6 +32,13 @@ int BFS_distributie(Graf graf, NodGraf *nod_graf, int distributie){
     }
 
     return nr_noduri;
+}
+
+int comparare_nume(const void *a, const void *b){
+    char *pa = (char *) a;
+    char *pb = (char *) b;
+
+    return strcmp(pa, pb);
 }
 
 //Rezolvarea primei cerinte
@@ -106,7 +113,7 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
         }
     }
     //Sortarea actorilor din distributia maximala
-    qsort(actori_distributie_maximala, nr, L_MAX * sizeof(char), strcmp);
+    qsort(actori_distributie_maximala, nr, L_MAX * sizeof(char), comparare_nume);
 
     //Afisarea rezultatelor
     FILE *f_out = fopen(fisier_iesire, "w");
