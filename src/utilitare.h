@@ -44,4 +44,7 @@ ElementCoada *extragere_coada(Coada *);
 //Functia de comparare a doua siruri de caractere folosita de qsort
 int comparare_nume(const void *, const void *);
 
+//Fucntia de comparare a doua punti folosita de qsort
+int comparare_punti(const void *, const void *);
+
 #endif // __UTILITARE__

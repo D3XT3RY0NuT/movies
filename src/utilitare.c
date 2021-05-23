@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include "structuri.h"
 
 //Creeaza un nod de graf si il returneaza
@@ -9,6 +10,8 @@ NodGraf *creare_nod_graf(char *nume_actor){
     strcpy(aux->nume, nume_actor);
     aux->lista_adiacenta = NULL;
     aux->distributie = 0;
+    aux->timp_descoperire = 0;
+    aux->minim = INT_MAX;
 
     return aux;
 }
@@ -147,4 +150,12 @@ int comparare_nume(const void *a, const void *b){
     char *pb = (char *) b;
 
     return strcmp(pa, pb);
+}
+
+//Fucntia de comparare a doua punti folosita de qsort
+int comparare_punti(const void *a, const void *b){
+    Punte *pa = (Punte *) a;
+    Punte *pb = (Punte *) b;
+
+    return strcmp(pa->actor1, pb->actor1);
 }

@@ -1,7 +1,7 @@
 #ifndef __STRUCTURI__
 #define __STRUCTURI__
 #define L_MAX 100 //Lungimea maxima a numelui unui actor sau film
-#define NR_ACTORI_MAX 10000 //Numarul maxim de actori
+#define NR_ACTORI_MAX 6000 //Numarul maxim de actori
 
 //Structura de date ce implementeaza un nod din lista de adiacenta
 //Lista este o lista simplu inlantuita
@@ -13,7 +13,9 @@ typedef struct NodLista{
 //Structura de date ce implementeaza un nod dintr-un graf
 typedef struct NodGraf{
     char nume[L_MAX]; //Campul de date este numele autorului
+    char parinte[L_MAX]; //Parintele nodului pentru DFS
     int distributie;
+    int timp_descoperire, minim; //Valori folosite pentru determina puntilor
     NodLista *lista_adiacenta; //Lista de adiacenta
 }NodGraf;
 
@@ -41,5 +43,10 @@ typedef struct ElementCoada{
 typedef struct Coada{
     ElementCoada *inceput, *sfarsit;
 }Coada;
+
+typedef struct Punte{
+    char actor1[L_MAX];
+    char actor2[L_MAX];
+}Punte;
 
 #endif // __STRUCTURI__
