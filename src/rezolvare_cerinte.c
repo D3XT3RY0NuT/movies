@@ -125,4 +125,5 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
     for (int i = 0; i < nr; i++)
         fprintf(f_out, "%s", actori_distributie_maximala[i]);
     fclose(f_out);
+    stergere_graf(&graf);
 }

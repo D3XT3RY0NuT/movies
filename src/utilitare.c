@@ -13,6 +13,18 @@ NodGraf *creare_nod_graf(char *nume_actor){
     return aux;
 }
 
+//Sterge un nod de graf, eliberand memoria ocupata de acesta
+void stergere_nod_graf(NodGraf *nod){
+    NodLista *aux1, *aux2;
+    aux1 = nod->lista_adiacenta;
+    while(aux1){
+        aux2 = aux1;
+        aux1 = aux1->urm;
+        free(aux2);
+    }
+    free(nod);
+}
+
 //Creeaza un nod de lista si il returneaza
 NodLista *creare_nod_lista(char *nume_actor){
     NodLista *aux = (NodLista *) malloc(sizeof(NodLista));
@@ -38,6 +50,20 @@ void adaugare_lista_adiacenta(NodGraf *nod_graf, char *nume_actor){
 void initializare_graf(Graf *graf){
     for (int i = 0; i < NR_ACTORI_MAX; i++)
         graf->actori[i] = NULL;
+}
+
+//Sterge graful eliberand memoria ocupata de acesta
+void stergere_graf(Graf *graf){
+    NodTabel *aux1, *aux2;
+    for (int i = 0; i < NR_ACTORI_MAX; i++){
+        aux1 = graf->actori[i];
+        while(aux1){
+            stergere_nod_graf(aux1->nod);
+            aux2 = aux1;
+            aux1 = aux1->urm;
+            free(aux2);
+        }
+    }
 }
 
 //Genereaza cheia pentru tabela de dispersie corespunzatoare numelui dat ca argument

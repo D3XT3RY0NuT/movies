@@ -4,6 +4,9 @@
 //Creeaza un nod de graf si il returneaza
 NodGraf *creare_nod_graf(char *);
 
+//Sterge un nod de graf, eliberand memoria ocupata de acesta
+void stergere_nod_graf(NodGraf *);
+
 //Creeaza un nod de lista si il returneaza
 NodLista *creare_nod_lista(char *);
 
@@ -12,6 +15,9 @@ void adaugare_lista_adiacenta(NodGraf *, char *);
 
 //Initializeaza un graf vid
 void initializare_graf(Graf *);
+
+//Sterge graful eliberand memoria ocupata de acesta
+void stergere_graf(Graf *);
 
 //Genereaza cheia pentru tabela de dispersie corespunzatoare numelui dat ca argument
 int generare_cheie(char *);
