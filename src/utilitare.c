@@ -14,6 +14,7 @@ NodGraf *creare_nod_graf(char *nume_actor){
 }
 
 //Sterge un nod de graf, eliberand memoria ocupata de acesta
+//Si a listei sale de adiacenta
 void stergere_nod_graf(NodGraf *nod){
     NodLista *aux1, *aux2;
     aux1 = nod->lista_adiacenta;

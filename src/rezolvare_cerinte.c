@@ -29,6 +29,7 @@ int BFS_distributie(Graf graf, NodGraf *nod_graf, int distributie){
             }
             vecin = vecin->urm;
         }
+        free(varf);
     }
 
     return nr_noduri;
