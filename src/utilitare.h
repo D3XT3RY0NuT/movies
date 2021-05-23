@@ -41,4 +41,7 @@ int este_coada_vida(Coada);
 //Extrage elementul de la inceputul cozii, daca acesta exista
 ElementCoada *extragere_coada(Coada *);
 
+//Functia de comparare a doua siruri de caractere folosita de qsort
+int comparare_nume(const void *, const void *);
+
 #endif // __UTILITARE__

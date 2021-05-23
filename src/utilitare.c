@@ -140,3 +140,11 @@ ElementCoada *extragere_coada(Coada *coada){
 
     return aux;
 }
+
+//Functia de comparare a doua siruri de caractere folosita de qsort
+int comparare_nume(const void *a, const void *b){
+    char *pa = (char *) a;
+    char *pb = (char *) b;
+
+    return strcmp(pa, pb);
+}
