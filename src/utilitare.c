@@ -157,7 +157,7 @@ int comparare_nume(const void *a, const void *b){
     return strcmp(pa, pb);
 }
 
-//Fucntia de comparare a doua punti folosita de qsort
+//Functia de comparare a doua punti folosita de qsort
 int comparare_punti(const void *a, const void *b){
     Punte *pa = (Punte *) a;
     Punte *pb = (Punte *) b;

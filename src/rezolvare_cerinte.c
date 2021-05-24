@@ -204,6 +204,7 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     stergere_graf(&graf);
 }
 
+//Algoritmul lui Trajan pentru determinarea puntilor din graf
 void DFS_punti(Graf *graf, NodGraf *nod_graf, int timp, Punte *punti, int *nr_punti){
     nod_graf->timp_descoperire = timp;
     nod_graf->minim = timp;
