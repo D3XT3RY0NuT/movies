@@ -14,7 +14,7 @@ NodLista *creare_nod_lista(char *);
 void adaugare_lista_adiacenta(NodGraf *, char *);
 
 //Initializeaza un graf vid
-void initializare_graf(Graf *);
+Graf *initializare_graf(void);
 
 //Sterge graful eliberand memoria ocupata de acesta
 void stergere_graf(Graf *);
@@ -29,7 +29,7 @@ NodGraf *cautare_actor(Graf, char *);
 NodGraf *inserare_graf(Graf *, char *);
 
 //Initializeaza o coada vida
-void initializare_coada(Coada *);
+Coada *initializare_coada(void);
 
 //Insereaza un nou element in coada
 void inserare_coada(Coada *, NodGraf *);

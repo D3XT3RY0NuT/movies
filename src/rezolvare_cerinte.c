@@ -9,28 +9,28 @@
 //Se foloseste algoritmul de parcurgere in latime
 //Returneaza numarul de noduri din componenta conexa respectiva
 int BFS_distributie(Graf *graf, NodGraf *nod_graf, int distributie){
-    Coada coada;
-    initializare_coada(&coada);
-    inserare_coada(&coada, nod_graf);
+    Coada *coada = initializare_coada();
+    inserare_coada(coada, nod_graf);
     ElementCoada *varf; //Elementul din graf situat la varful cozii
     NodLista *vecin; //Numele vecinului nodului din varful cozii
     NodGraf *nod_vecin; //Nodul din graf corespunzator vecinului
     int nr_noduri = 0; //Numarul de noduri din componenta conexa
     nod_graf->distributie = distributie;
-    while(!este_coada_vida(coada)){
-        varf = extragere_coada(&coada);
+    while(!este_coada_vida(*coada)){
+        varf = extragere_coada(coada);
         nr_noduri++;
         vecin = varf->nod->lista_adiacenta;
         while(vecin){
             nod_vecin = cautare_actor(*graf, vecin->nume);
             if (!nod_vecin->distributie){
                 nod_vecin->distributie = distributie;
-                inserare_coada(&coada, nod_vecin);
+                inserare_coada(coada, nod_vecin);
             }
             vecin = vecin->urm;
         }
         free(varf);
     }
+    free(coada);
 
     return nr_noduri;
 }
@@ -40,26 +40,27 @@ int BFS_distributie(Graf *graf, NodGraf *nod_graf, int distributie){
 //Se foloseste parcurgerea in latime
 //Variabila distributie din nodul de graf are sensul de distanta in acest context
 void BFS_distanta(Graf *graf, NodGraf *nod_graf){
-    Coada coada;
-    initializare_coada(&coada);
-    inserare_coada(&coada, nod_graf);
+    Coada *coada = initializare_coada();
+    inserare_coada(coada, nod_graf);
     ElementCoada *varf; //Elementul din graf situat la varful cozii
     NodLista *vecin; //Numele vecinului nodului din varful cozii
     NodGraf *nod_vecin; //Nodul din graf corespunzator vecinului
     nod_graf->distributie = 1;
-    while(!este_coada_vida(coada)){
-        varf = extragere_coada(&coada);
+    while(!este_coada_vida(*coada)){
+        varf = extragere_coada(coada);
         vecin = varf->nod->lista_adiacenta;
         while(vecin){
             nod_vecin = cautare_actor(*graf, vecin->nume);
             if (!nod_vecin->distributie){
                 nod_vecin->distributie = varf->nod->distributie + 1;
-                inserare_coada(&coada, nod_vecin);
+                inserare_coada(coada, nod_vecin);
             }
             vecin = vecin->urm;
         }
         free(varf);
     }
+
+    free(coada);
 }
 
 //Rezolvarea primei cerinte
@@ -72,10 +73,9 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
     }
     int nr_filme, nr_actori;
     char nume_film[L_MAX], actori[NR_MAX_ACTORI_FILM][L_MAX];
-    Graf graf;
+    Graf *graf = initializare_graf();
     //nod_actori[j] retine nodul pe care se afla actorul cu numele actori[j]
     NodGraf *nod_actori[NR_MAX_ACTORI_FILM];
-    initializare_graf(&graf);
     fscanf(f_in, "%d", &nr_filme);
     for (int i = 0; i < nr_filme; i++){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de film
@@ -88,7 +88,7 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de actori
         for (int j = 0; j < nr_actori; j++){
             fgets(actori[j], L_MAX, f_in);
-            nod_actori[j] = inserare_graf(&graf, actori[j]);
+            nod_actori[j] = inserare_graf(graf, actori[j]);
         }
         for (int j = 0; j < nr_actori; j++){
             for (int k = j + 1; k < nr_actori; k++){
@@ -108,10 +108,10 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
     int nr;
     NodTabel *aux;
     for (int i = 0; i < NR_ACTORI_MAX; i++){
-        aux = graf.actori[i];
+        aux = graf->actori[i];
         while(aux){
             if (!aux->nod->distributie){
-                nr = BFS_distributie(&graf, aux->nod, distributie);
+                nr = BFS_distributie(graf, aux->nod, distributie);
                 if (nr > maxim){
                     distributie_maxim = distributie;
                     maxim = nr;
@@ -126,7 +126,7 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
     char actori_distributie_maximala[NR_ACTORI_MAX][L_MAX];
     nr = 0;
     for (int i = 0; i < NR_ACTORI_MAX; i++){
-        aux = graf.actori[i];
+        aux = graf->actori[i];
         while(aux){
             if (aux->nod->distributie == distributie_maxim)
                 strcpy(actori_distributie_maximala[nr++], aux->nod->nume);
@@ -146,7 +146,7 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
     for (int i = 0; i < nr; i++)
         fprintf(f_out, "%s", actori_distributie_maximala[i]);
     fclose(f_out);
-    stergere_graf(&graf);
+    stergere_graf(graf);
 }
 
 void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
@@ -158,10 +158,9 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     }
     int nr_filme, nr_actori;
     char nume_film[L_MAX], actori[NR_MAX_ACTORI_FILM][L_MAX];
-    Graf graf;
+    Graf *graf = initializare_graf();
     //nod_actori[j] retine nodul pe care se afla actorul cu numele actori[j]
     NodGraf *nod_actori[NR_MAX_ACTORI_FILM];
-    initializare_graf(&graf);
     fscanf(f_in, "%d", &nr_filme);
     for (int i = 0; i < nr_filme; i++){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de film
@@ -174,7 +173,7 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de actori
         for (int j = 0; j < nr_actori; j++){
             fgets(actori[j], L_MAX, f_in);
-            nod_actori[j] = inserare_graf(&graf, actori[j]);
+            nod_actori[j] = inserare_graf(graf, actori[j]);
         }
         for (int j = 0; j < nr_actori; j++){
             for (int k = j + 1; k < nr_actori; k++){
@@ -186,12 +185,12 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     //Cei doi actori pentru care se doreste determinarea distantei dintre ei
     fgets(actori[0], L_MAX, f_in);
     fgets(actori[1], L_MAX, f_in);
-    nod_actori[0] = cautare_actor(graf, actori[0]);
-    nod_actori[1] = cautare_actor(graf, actori[1]);
+    nod_actori[0] = cautare_actor(*graf, actori[0]);
+    nod_actori[1] = cautare_actor(*graf, actori[1]);
     fclose(f_in);
 
     //Rezolvarea cerintei
-    BFS_distanta(&graf, nod_actori[0]);
+    BFS_distanta(graf, nod_actori[0]);
 
     //Afisarea rezultatului
     FILE *f_out = fopen(fisier_iesire, "w");
@@ -201,7 +200,7 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     }
     fprintf(f_out, "%d\n", nod_actori[1]->distributie - 1);
     fclose(f_out);
-    stergere_graf(&graf);
+    stergere_graf(graf);
 }
 
 //Algoritmul lui Trajan pentru determinarea puntilor din graf
@@ -245,10 +244,9 @@ void rezolvare_cerinta3(char *fisier_intrare, char *fisier_iesire){
     }
     int nr_filme, nr_actori;
     char nume_film[L_MAX], actori[NR_MAX_ACTORI_FILM][L_MAX];
-    Graf graf;
+    Graf *graf = initializare_graf();
     //nod_actori[j] retine nodul pe care se afla actorul cu numele actori[j]
     NodGraf *nod_actori[NR_MAX_ACTORI_FILM];
-    initializare_graf(&graf);
     fscanf(f_in, "%d", &nr_filme);
     for (int i = 0; i < nr_filme; i++){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de film
@@ -261,7 +259,7 @@ void rezolvare_cerinta3(char *fisier_intrare, char *fisier_iesire){
         fgetc(f_in); //Curata caracterul '\n' rezidual ramas de la citirea numarului de actori
         for (int j = 0; j < nr_actori; j++){
             fgets(actori[j], L_MAX, f_in);
-            nod_actori[j] = inserare_graf(&graf, actori[j]);
+            nod_actori[j] = inserare_graf(graf, actori[j]);
         }
         for (int j = 0; j < nr_actori; j++){
             for (int k = j + 1; k < nr_actori; k++){
@@ -274,13 +272,13 @@ void rezolvare_cerinta3(char *fisier_intrare, char *fisier_iesire){
 
     //Aplicarea algoritmului de parcurgere in adancime modificat
     //Pentru a determina puntile din graf
-    Punte punti[NR_ACTORI_MAX];
+    Punte *punti = (Punte *) malloc(NR_ACTORI_MAX * sizeof(Punte));
     int nr_punti = 0;
     for (int i = 0; i < NR_ACTORI_MAX; i++){
-        NodTabel *aux = graf.actori[i];
+        NodTabel *aux = graf->actori[i];
         while(aux){
             if (!aux->nod->timp_descoperire)
-                DFS_punti(&graf, aux->nod, 1, punti, &nr_punti);
+                DFS_punti(graf, aux->nod, 1, punti, &nr_punti);
             aux = aux->urm;
         }
     }
@@ -298,5 +296,6 @@ void rezolvare_cerinta3(char *fisier_intrare, char *fisier_iesire){
         fprintf(f_out, "%s %s", punti[i].actor1, punti[i].actor2);
     }
     fclose(f_out);
-    stergere_graf(&graf);
+    free(punti);
+    stergere_graf(graf);
 }

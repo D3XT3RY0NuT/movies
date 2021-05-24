@@ -52,9 +52,12 @@ void adaugare_lista_adiacenta(NodGraf *nod_graf, char *nume_actor){
 }
 
 //Initializeaza un graf vid
-void initializare_graf(Graf *graf){
+Graf *initializare_graf(){
+    Graf *graf = (Graf *) malloc(sizeof(Graf));
     for (int i = 0; i < NR_ACTORI_MAX; i++)
         graf->actori[i] = NULL;
+
+    return graf;
 }
 
 //Sterge graful eliberand memoria ocupata de acesta
@@ -110,8 +113,11 @@ NodGraf *inserare_graf(Graf *graf, char *nume_actor){
 }
 
 //Initializeaza o coada vida
-void initializare_coada(Coada *coada){
+Coada *initializare_coada(){
+    Coada *coada = (Coada *) malloc(sizeof(Coada));
     coada->inceput = coada->sfarsit = NULL;
+
+    return coada;
 }
 
 //Insereaza un nou element in coada
