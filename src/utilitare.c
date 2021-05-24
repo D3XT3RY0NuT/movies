@@ -72,6 +72,7 @@ void stergere_graf(Graf *graf){
             free(aux2);
         }
     }
+    free(graf);
 }
 
 //Genereaza cheia pentru tabela de dispersie corespunzatoare numelui dat ca argument
