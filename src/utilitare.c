@@ -9,6 +9,7 @@ NodGraf *creare_nod_graf(char *nume_actor){
     NodGraf *aux = (NodGraf *) malloc(sizeof(NodGraf));
     strcpy(aux->nume, nume_actor);
     aux->lista_adiacenta = NULL;
+    strcpy(aux->parinte, "");
     aux->distributie = 0;
     aux->timp_descoperire = 0;
     aux->minim = INT_MAX;
@@ -140,6 +141,10 @@ ElementCoada *extragere_coada(Coada *coada){
             coada->sfarsit = coada->inceput->prec;
         coada->inceput = coada->inceput->prec;
     }
+    else{
+        printf("S-a incercat extragerea dintr-o coada vida.\n");
+        exit(1);
+    }
 
     return aux;
 }
@@ -156,6 +161,9 @@ int comparare_nume(const void *a, const void *b){
 int comparare_punti(const void *a, const void *b){
     Punte *pa = (Punte *) a;
     Punte *pb = (Punte *) b;
+    int dif = strcmp(pa->actor1, pb->actor1);
+    if (!dif)
+        return strcmp(pa->actor2, pb->actor2);
 
-    return strcmp(pa->actor1, pb->actor1);
+    return dif;
 }

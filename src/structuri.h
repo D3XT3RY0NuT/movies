@@ -1,7 +1,7 @@
 #ifndef __STRUCTURI__
 #define __STRUCTURI__
 #define L_MAX 100 //Lungimea maxima a numelui unui actor sau film
-#define NR_ACTORI_MAX 6000 //Numarul maxim de actori
+#define NR_ACTORI_MAX 10000 //Numarul maxim de actori
 
 //Structura de date ce implementeaza un nod din lista de adiacenta
 //Lista este o lista simplu inlantuita

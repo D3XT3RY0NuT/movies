@@ -8,7 +8,7 @@
 //Determinarea distributiilor (componentelor conexe) din graf
 //Se foloseste algoritmul de parcurgere in latime
 //Returneaza numarul de noduri din componenta conexa respectiva
-int BFS_distributie(Graf graf, NodGraf *nod_graf, int distributie){
+int BFS_distributie(Graf *graf, NodGraf *nod_graf, int distributie){
     Coada coada;
     initializare_coada(&coada);
     inserare_coada(&coada, nod_graf);
@@ -22,7 +22,7 @@ int BFS_distributie(Graf graf, NodGraf *nod_graf, int distributie){
         nr_noduri++;
         vecin = varf->nod->lista_adiacenta;
         while(vecin){
-            nod_vecin = cautare_actor(graf, vecin->nume);
+            nod_vecin = cautare_actor(*graf, vecin->nume);
             if (!nod_vecin->distributie){
                 nod_vecin->distributie = distributie;
                 inserare_coada(&coada, nod_vecin);
@@ -39,7 +39,7 @@ int BFS_distributie(Graf graf, NodGraf *nod_graf, int distributie){
 //La toate celelalte noduri la care se poate ajunge
 //Se foloseste parcurgerea in latime
 //Variabila distributie din nodul de graf are sensul de distanta in acest context
-void BFS_distanta(Graf graf, NodGraf *nod_graf){
+void BFS_distanta(Graf *graf, NodGraf *nod_graf){
     Coada coada;
     initializare_coada(&coada);
     inserare_coada(&coada, nod_graf);
@@ -51,7 +51,7 @@ void BFS_distanta(Graf graf, NodGraf *nod_graf){
         varf = extragere_coada(&coada);
         vecin = varf->nod->lista_adiacenta;
         while(vecin){
-            nod_vecin = cautare_actor(graf, vecin->nume);
+            nod_vecin = cautare_actor(*graf, vecin->nume);
             if (!nod_vecin->distributie){
                 nod_vecin->distributie = varf->nod->distributie + 1;
                 inserare_coada(&coada, nod_vecin);
@@ -111,7 +111,7 @@ void rezolvare_cerinta1(char *fisier_intrare, char *fisier_iesire){
         aux = graf.actori[i];
         while(aux){
             if (!aux->nod->distributie){
-                nr = BFS_distributie(graf, aux->nod, distributie);
+                nr = BFS_distributie(&graf, aux->nod, distributie);
                 if (nr > maxim){
                     distributie_maxim = distributie;
                     maxim = nr;
@@ -191,7 +191,7 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     fclose(f_in);
 
     //Rezolvarea cerintei
-    BFS_distanta(graf, nod_actori[0]);
+    BFS_distanta(&graf, nod_actori[0]);
 
     //Afisarea rezultatului
     FILE *f_out = fopen(fisier_iesire, "w");
@@ -204,13 +204,13 @@ void rezolvare_cerinta2(char *fisier_intrare, char *fisier_iesire){
     stergere_graf(&graf);
 }
 
-void DFS_punti(Graf graf, NodGraf *nod_graf, int timp, Punte *punti, int *nr_punti){
+void DFS_punti(Graf *graf, NodGraf *nod_graf, int timp, Punte *punti, int *nr_punti){
     nod_graf->timp_descoperire = timp;
     nod_graf->minim = timp;
     NodLista *aux = nod_graf->lista_adiacenta;
     while(aux){
         if (strcmp(aux->nume, nod_graf->parinte)){
-            NodGraf *nod_copil = cautare_actor(graf, aux->nume); //Nodul copil al nodului graf
+            NodGraf *nod_copil = cautare_actor(*graf, aux->nume); //Nodul copil al nodului graf
             if (!nod_copil->timp_descoperire){
                 strcpy(nod_copil->parinte, nod_graf->nume);
                 DFS_punti(graf, nod_copil, timp + 1, punti, nr_punti);
@@ -279,7 +279,7 @@ void rezolvare_cerinta3(char *fisier_intrare, char *fisier_iesire){
         NodTabel *aux = graf.actori[i];
         while(aux){
             if (!aux->nod->timp_descoperire)
-                DFS_punti(graf, aux->nod, 1, punti, &nr_punti);
+                DFS_punti(&graf, aux->nod, 1, punti, &nr_punti);
             aux = aux->urm;
         }
     }
